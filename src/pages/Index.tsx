@@ -64,42 +64,92 @@ const allClasses = [
   { place: 6, cls: '8 «Б»', points: 801, avg: 28.6, trend: "+2%", up: true, medal: "" },
 ];
 
-const tasks = [
+type Task = {
+  id: number;
+  icon: string;
+  title: string;
+  subtitle: string;
+  daysLeft: number | null;
+  done: number | null;
+  total: number | null;
+  points: number;
+  action: string;
+  category: "challenge" | "sport" | "family" | "nutrition" | "city" | "course";
+};
+
+const taskCategories = [
+  { id: "all", label: "Все" },
+  { id: "challenge", label: "💪 Челленджи" },
+  { id: "sport", label: "🏃 Спорт" },
+  { id: "family", label: "👨‍👩‍👧 Семья" },
+  { id: "nutrition", label: "🥗 Питание" },
+  { id: "city", label: "🏙 Город" },
+  { id: "course", label: "📚 Курсы" },
+];
+
+const tasks: Task[] = [
   {
     id: 1,
     icon: "🔥",
     title: "Планка на 2 минуты",
-    subtitle: "Челлендж недели",
+    subtitle: "Челлендж недели • До конца: 4 дня",
     daysLeft: 4,
     done: 12,
     total: 28,
     points: 15,
     action: "Загрузить видео",
+    category: "challenge",
   },
   {
     id: 2,
+    icon: "🦘",
+    title: "100 прыжков на скакалке",
+    subtitle: "Челлендж • За 1 подход",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 12,
+    action: "Загрузить видео",
+    category: "challenge",
+  },
+  {
+    id: 3,
+    icon: "💪",
+    title: "50 приседаний",
+    subtitle: "Челлендж • Можно за несколько подходов",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 10,
+    action: "Загрузить видео",
+    category: "challenge",
+  },
+  {
+    id: 4,
     icon: "🚶‍♂️",
     title: "Отправить шаги",
-    subtitle: "Ежедневно",
+    subtitle: "Ежедневно • Скриншот из Health/Samsung Health",
     daysLeft: null,
     done: null,
     total: null,
     points: 5,
     action: "Загрузить скриншот",
+    category: "sport",
   },
   {
-    id: 3,
+    id: 5,
     icon: "🌅",
     title: "Утренняя зарядка",
-    subtitle: "Сегодня в 8:00",
+    subtitle: "Сегодня в 8:00 • У школы",
     daysLeft: null,
     done: null,
     total: null,
     points: 10,
     action: "Я на зарядке",
+    category: "sport",
   },
   {
-    id: 4,
+    id: 6,
     icon: "⚽",
     title: "Посещение секции",
     subtitle: "Любая спортивная секция",
@@ -108,17 +158,127 @@ const tasks = [
     total: null,
     points: 8,
     action: "Загрузить подтверждение",
+    category: "sport",
   },
   {
-    id: 5,
+    id: 7,
+    icon: "👨‍👩‍👧",
+    title: "Семейный забег",
+    subtitle: "Семья • Пробеги 1 км вместе с родителями",
+    daysLeft: 10,
+    done: null,
+    total: null,
+    points: 30,
+    action: "Загрузить фото",
+    category: "family",
+  },
+  {
+    id: 8,
+    icon: "🚴",
+    title: "Велопрогулка с семьёй",
+    subtitle: "Семья • Минимум 5 км вместе",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 20,
+    action: "Загрузить фото",
+    category: "family",
+  },
+  {
+    id: 9,
+    icon: "🥗",
+    title: "Покажи свой завтрак",
+    subtitle: "Питание • Фото полезного завтрака",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 8,
+    action: "Загрузить фото",
+    category: "nutrition",
+  },
+  {
+    id: 10,
+    icon: "🍎",
+    title: "День без сладкого",
+    subtitle: "Питание • Без конфет и газировки",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 10,
+    action: "Отметить выполнение",
+    category: "nutrition",
+  },
+  {
+    id: 11,
+    icon: "👨‍🍳",
+    title: "Приготовь здоровое блюдо",
+    subtitle: "Питание • Салат или смузи своими руками",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 15,
+    action: "Загрузить фото",
+    category: "nutrition",
+  },
+  {
+    id: 12,
     icon: "🏙",
-    title: "Городское мероприятие",
-    subtitle: 'Марафон «Здоровый город»',
+    title: "Городской забег",
+    subtitle: 'Город • Марафон «Здоровый город» • 7 дней',
     daysLeft: 7,
     done: null,
     total: null,
     points: 25,
     action: "Загрузить фото",
+    category: "city",
+  },
+  {
+    id: 13,
+    icon: "🎪",
+    title: "Ярмарка здорового питания",
+    subtitle: "Город • Участие в школьной ярмарке",
+    daysLeft: 1,
+    done: null,
+    total: null,
+    points: 20,
+    action: "Я участвую",
+    category: "city",
+  },
+  {
+    id: 14,
+    icon: "📚",
+    title: "Курс «Здоровое питание»",
+    subtitle: "Онлайн • 5 уроков • 30 минут",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 20,
+    action: "Начать курс",
+    category: "course",
+  },
+  {
+    id: 15,
+    icon: "🧘",
+    title: "Курс «Стресс и здоровье»",
+    subtitle: "Онлайн • 4 урока • Как справляться со стрессом",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 15,
+    action: "Начать курс",
+    category: "course",
+  },
+  {
+    id: 16,
+    icon: "💤",
+    title: "Курс «Сон и режим дня»",
+    subtitle: "Онлайн • 3 урока • Почему важен режим",
+    daysLeft: null,
+    done: null,
+    total: null,
+    points: 15,
+    action: "Начать курс",
+    category: "course",
   },
 ];
 
@@ -142,13 +302,8 @@ const weekDays = [
 const maxSteps = Math.max(...weekDays.map((d) => d.steps));
 
 export default function Index() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("home");
   const [filterClass, setFilterClass] = useState("all");
-
-  if (!isLoggedIn) {
-    return <LoginScreen onLogin={() => setIsLoggedIn(true)} />;
-  }
 
   return (
     <div className="phone-frame bg-background font-golos">
@@ -403,6 +558,45 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   );
 }
 
+/* ─── CITY EVENT BANNER ─── */
+function CityEventBanner() {
+  const [joined, setJoined] = useState(false);
+  return (
+    <div
+      className="rounded-2xl p-4 mb-5 animate-slide-up delay-200"
+      style={{
+        background: "linear-gradient(135deg, hsl(220 70% 55% / 0.18), hsl(270 60% 50% / 0.1))",
+        border: "1px solid hsl(220 70% 60% / 0.35)",
+      }}
+    >
+      <div className="flex justify-between items-start mb-2">
+        <div>
+          <span
+            className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full"
+            style={{ background: "hsl(220 70% 55% / 0.2)", color: "#60a5fa" }}
+          >
+            🏙 Городское мероприятие
+          </span>
+          <h3 className="font-bold text-sm mt-1.5">Марафон «Здоровый город»</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">Суббота, 14 июня • Парк Победы • 10:00</p>
+        </div>
+        <span className="font-oswald font-bold text-xl" style={{ color: "#60a5fa" }}>+25б</span>
+      </div>
+      <button
+        onClick={() => setJoined((j) => !j)}
+        className="w-full py-2.5 rounded-xl font-bold text-sm mt-2 transition-all duration-200 active:scale-95"
+        style={{
+          background: joined ? "hsl(142 72% 50% / 0.15)" : "hsl(220 70% 55% / 0.85)",
+          color: joined ? "var(--green)" : "#fff",
+          border: joined ? "1px solid var(--green)" : "none",
+        }}
+      >
+        {joined ? "✅ Ты участвуешь!" : "🏃 Я участвую"}
+      </button>
+    </div>
+  );
+}
+
 /* ─── HOME TAB ─── */
 function HomeTab() {
   return (
@@ -482,8 +676,11 @@ function HomeTab() {
         </div>
       </div>
 
+      {/* City event banner */}
+      <CityEventBanner />
+
       {/* Feed */}
-      <div className="mb-4 animate-slide-up delay-200">
+      <div className="mb-4 animate-slide-up delay-300">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">
           📡 Лента событий
         </p>
@@ -655,27 +852,30 @@ function RatingTab({
 /* ─── TASKS TAB ─── */
 function TasksTab() {
   const [done, setDone] = useState<number[]>([]);
+  const [activeCategory, setActiveCategory] = useState("all");
 
   const markDone = (id: number) => {
     setDone((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
   const challenge = tasks[0];
-  const dailyTasks = tasks.slice(1);
+  const filtered =
+    activeCategory === "all"
+      ? tasks.slice(1)
+      : tasks.slice(1).filter((t) => t.category === activeCategory);
 
   return (
     <div className="px-4 pt-2">
-      <div className="mb-5 animate-slide-up">
+      <div className="mb-4 animate-slide-up">
         <h2 className="font-oswald text-2xl font-bold tracking-wide">ЗАДАНИЯ</h2>
-        <p className="text-xs text-muted-foreground">Челленджи и активности</p>
+        <p className="text-xs text-muted-foreground">Выполняй и зарабатывай баллы</p>
       </div>
 
       {/* Challenge of the week */}
       <div
-        className="rounded-2xl p-4 mb-5 animate-slide-up delay-100"
+        className="rounded-2xl p-4 mb-4 animate-slide-up delay-100"
         style={{
-          background:
-            "linear-gradient(135deg, hsl(28 95% 55% / 0.15), hsl(28 95% 55% / 0.05))",
+          background: "linear-gradient(135deg, hsl(28 95% 55% / 0.15), hsl(28 95% 55% / 0.05))",
           border: "1px solid hsl(28 95% 55% / 0.35)",
         }}
       >
@@ -689,109 +889,105 @@ function TasksTab() {
             </span>
             <h3 className="font-bold text-base mt-2">{challenge.title}</h3>
           </div>
-          <span
-            className="font-oswald font-bold text-2xl"
-            style={{ color: "var(--orange)" }}
-          >
+          <span className="font-oswald font-bold text-2xl" style={{ color: "var(--orange)" }}>
             +{challenge.points}б
           </span>
         </div>
-
         <div className="flex justify-between text-xs text-muted-foreground mb-2">
-          <span>
-            Выполнил класс: {challenge.done} из {challenge.total}
-          </span>
+          <span>Выполнил класс: {challenge.done} из {challenge.total}</span>
           <span>До конца: {challenge.daysLeft} дн</span>
         </div>
-        <div
-          className="h-2 rounded-full mb-3"
-          style={{ background: "hsl(var(--border))" }}
-        >
+        <div className="h-2 rounded-full mb-3" style={{ background: "hsl(var(--border))" }}>
           <div
             className="h-full rounded-full progress-bar"
-            style={
-              {
-                "--progress-width": `${((challenge.done ?? 0) / (challenge.total ?? 1)) * 100}%`,
-                background: "linear-gradient(90deg, var(--orange), #ff9a44)",
-              } as React.CSSProperties
-            }
+            style={{
+              "--progress-width": `${((challenge.done ?? 0) / (challenge.total ?? 1)) * 100}%`,
+              background: "linear-gradient(90deg, var(--orange), #ff9a44)",
+            } as React.CSSProperties}
           />
         </div>
-
         <button
           onClick={() => markDone(challenge.id)}
           className="w-full py-3 rounded-xl font-bold text-sm transition-all duration-200 active:scale-95"
           style={{
-            background: done.includes(challenge.id)
-              ? "var(--green-dim)"
-              : "var(--orange)",
-            color: done.includes(challenge.id)
-              ? "var(--green)"
-              : "hsl(var(--background))",
-            border: done.includes(challenge.id)
-              ? "1px solid var(--green)"
-              : "none",
+            background: done.includes(challenge.id) ? "var(--green-dim)" : "var(--orange)",
+            color: done.includes(challenge.id) ? "var(--green)" : "hsl(var(--background))",
+            border: done.includes(challenge.id) ? "1px solid var(--green)" : "none",
           }}
         >
-          {done.includes(challenge.id)
-            ? "✅ Отправлено на проверку"
-            : `📸 ${challenge.action}`}
+          {done.includes(challenge.id) ? "✅ Отправлено на проверку" : `📸 ${challenge.action}`}
         </button>
       </div>
 
-      {/* Daily tasks */}
-      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3 animate-slide-up delay-200">
-        Активности
-      </p>
-      <div className="space-y-2.5">
-        {dailyTasks.map((task, i) => (
+      {/* Category filter */}
+      <div
+        className="flex gap-2 mb-4 overflow-x-auto pb-1 animate-slide-up delay-200"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {taskCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id)}
+            className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200"
+            style={{
+              background: activeCategory === cat.id ? "var(--green)" : "hsl(var(--muted))",
+              color: activeCategory === cat.id ? "hsl(var(--background))" : "hsl(var(--muted-foreground))",
+            }}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Task list */}
+      <div className="space-y-2.5 pb-2">
+        {filtered.map((task, i) => (
           <div
             key={task.id}
             className="flex items-center gap-3 p-3.5 rounded-2xl card-hover animate-slide-up"
             style={{
-              background: done.includes(task.id)
-                ? "hsl(142 72% 50% / 0.08)"
-                : "hsl(var(--card))",
+              background: done.includes(task.id) ? "hsl(142 72% 50% / 0.08)" : "hsl(var(--card))",
               border: done.includes(task.id)
                 ? "1px solid hsl(142 72% 50% / 0.3)"
                 : "1px solid hsl(var(--border))",
-              animationDelay: `${0.25 + i * 0.07}s`,
+              animationDelay: `${0.05 + i * 0.05}s`,
             }}
           >
             <span className="text-2xl flex-shrink-0">{task.icon}</span>
             <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-start">
-                <p className="font-semibold text-sm">{task.title}</p>
-                <span
-                  className="text-xs font-bold ml-2 flex-shrink-0"
-                  style={{ color: "var(--green)" }}
-                >
+              <div className="flex justify-between items-start gap-2">
+                <p className="font-semibold text-sm leading-tight">{task.title}</p>
+                <span className="text-xs font-bold flex-shrink-0" style={{ color: "var(--green)" }}>
                   +{task.points}б
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {task.subtitle}
-              </p>
+              <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{task.subtitle}</p>
+              {task.daysLeft && !done.includes(task.id) && (
+                <span
+                  className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full mt-1"
+                  style={{ background: "var(--orange-dim)", color: "var(--orange)" }}
+                >
+                  ⏰ {task.daysLeft} дн
+                </span>
+              )}
             </div>
             <button
               onClick={() => markDone(task.id)}
               className="flex-shrink-0 p-2 rounded-xl transition-all duration-200 active:scale-90"
               style={{
-                background: done.includes(task.id)
-                  ? "var(--green-dim)"
-                  : "hsl(var(--muted))",
-                color: done.includes(task.id)
-                  ? "var(--green)"
-                  : "hsl(var(--muted-foreground))",
+                background: done.includes(task.id) ? "var(--green-dim)" : "hsl(var(--muted))",
+                color: done.includes(task.id) ? "var(--green)" : "hsl(var(--muted-foreground))",
               }}
             >
-              <Icon
-                name={done.includes(task.id) ? "Check" : "Plus"}
-                size={16}
-              />
+              <Icon name={done.includes(task.id) ? "Check" : "Plus"} size={16} />
             </button>
           </div>
         ))}
+        {filtered.length === 0 && (
+          <div className="text-center py-10 text-muted-foreground text-sm">
+            Нет заданий в этой категории
+          </div>
+        )}
       </div>
     </div>
   );
